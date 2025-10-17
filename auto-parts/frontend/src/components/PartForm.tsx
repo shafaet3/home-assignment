@@ -114,9 +114,9 @@ export default function PartForm({
       <div>
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Save
+           className={`${defaultValues ? "bg-gradient-to-r from-green-400 to-emerald-500 text-white px-3 py-1 rounded-lg border border-green-600 hover:from-emerald-500 hover:to-green-400 hover:shadow-lg transition-all duration-300" : "bg-gradient-to-r from-blue-400 to-indigo-500 text-white px-3 py-1 rounded-lg border border-blue-600 hover:from-indigo-500 hover:to-blue-600 hover:shadow-lg transition-all duration-300"
+              }`}  >
+          {defaultValues ? "Update" : "Add"}
         </button>
       </div>
     </form>
