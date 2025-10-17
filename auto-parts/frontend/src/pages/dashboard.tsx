@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { isLoggedIn, logout } from "@/utils/auth";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import AnalyticsBar from "@/components/AnalyticsBar";
 
 type Part = {
   id: number;
@@ -101,14 +102,17 @@ export default function Dashboard() {
   }
 
   return (
+    <><h1 className="text-2xl font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 rounded-lg shadow-md mb-4 tracking-wide">
+  Parts
+</h1>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
       <div className="md:col-span-2">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-        </div>
+        
 
         <div className="bg-white p-4 rounded shadow mb-4">
-          <h2 className="font-semibold mb-2">Parts</h2>
+          
+
           {loading ? (
             <p>Loading...</p>
           ) : (
@@ -175,16 +179,11 @@ export default function Dashboard() {
       </div>
 
       <aside className="bg-white p-4 rounded shadow">
-        <div className="mb-4">
-          <strong>Total parts:</strong> {totalParts}
-          <br />
-          <strong>Categories:</strong> {categories}
-        </div>
+        <AnalyticsBar totalParts={totalParts} categories={categories} />
 
         <div>
           <h3
-            className={`text-center font-bold mb-4 text-lg ${editing ? "text-yellow-600" : "text-green-600"
-              } border-l-4 pl-3 py-1 ${editing ? "border-yellow-600 bg-yellow-50" : "border-green-600 bg-green-50"
+            className={`text-center font-bold mb-4 text-lg text-white border-l-4 pl-3 py-1 ${editing ? "bg-gradient-to-r from-green-400 to-emerald-500" : "bg-gradient-to-r from-blue-400 to-indigo-500"
               } rounded`}
           >
             {editing ? "Edit Part" : "Add Part"}
@@ -205,6 +204,6 @@ export default function Dashboard() {
 
         </div>
       </aside>
-    </div>
+    </div></>
   );
 }
