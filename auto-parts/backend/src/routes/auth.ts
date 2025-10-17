@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { prisma } from '../db';
 import { registerSchema, loginSchema } from '../utils/validators';
 import env from '../env';
+import { AuthRequest, requireAuth } from '../middleware/auth';
 
 
 const router = express.Router();
@@ -52,6 +53,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.get('/isLoggedIn', requireAuth, async (req: AuthRequest, res) => {
+    try {
+        const user = await prisma.users.findUnique({
+            where: { id: req.userId },
+            select: { id: true, name: true, email: true }
+        });
+
+        if (!user) return res.status(401).json({ message: 'User not found' });
+
+        return res.json({ user });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Server error' });
+    }
+});
 
 router.post('/logout', (req, res) => {
     res.clearCookie(env.COOKIE_NAME, { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' });
