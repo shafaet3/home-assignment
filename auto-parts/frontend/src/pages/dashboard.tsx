@@ -4,6 +4,7 @@ import PartForm from "@/components/PartForm";
 import { api } from "@/lib/api";
 import { isLoggedIn, logout } from "@/utils/auth";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Part = {
   id: number;
@@ -27,6 +28,7 @@ const gradients = [
   "from-violet-400 to-cyan-500",
   "from-red-400 to-yellow-500",
 ];
+
 
 export default function Dashboard() {
   const [parts, setParts] = useState<Part[]>([]);
@@ -103,12 +105,6 @@ export default function Dashboard() {
       <div className="md:col-span-2">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-semibold">Dashboard</h1>
-          <div className="space-x-2">
-            {/* <span className="text-sm text-gray-600">{user?.name}</span> */}
-            {/* <button onClick={handleLogout} className="text-sm text-red-600">
-              Logout
-            </button> */}
-          </div>
         </div>
 
         <div className="bg-white p-4 rounded shadow mb-4">
@@ -126,25 +122,48 @@ export default function Dashboard() {
                       className={`flex justify-between items-center p-4 rounded shadow text-white bg-gradient-to-r ${gradient}`}
                     >
                       <div>
-                        <div className="font-medium">{p.name}</div>
-                        <div className="text-sm opacity-90">
-                          ${p.price} • stock: {p.stock}
+                        {/* Name */}
+                        <div className="text-2xl font-bold text-white drop-shadow-lg mb-1">
+                          {p.name}
+                        </div>
+
+                        {/* Price */}
+                        <div className="text-sm md:text-base text-white drop-shadow-sm mb-1">
+                          <span className="font-semibold">Price:</span> ${p.price}
+                        </div>
+
+                        {/* Stock */}
+                        <div className="text-sm md:text-base text-white drop-shadow-sm">
+                          <span className="font-semibold">Stock:</span> {p.stock}
                         </div>
                       </div>
+
                       <div className="space-x-2 flex">
+                        {/* View Button as Link */}
+                        <Link
+                          href={`/parts/${p.id}`}
+                          className="bg-gradient-to-r from-blue-400 to-indigo-500 text-white px-3 py-1 rounded-lg border border-blue-600 hover:from-indigo-500 hover:to-blue-600 hover:shadow-lg transition-all duration-300"
+                        >
+                          View
+                        </Link>
+
+                        {/* Edit Button */}
                         <button
-                          className="bg-white bg-opacity-80 text-gray-800 px-3 py-1 rounded hover:bg-opacity-100 transition"
+                          className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-3 py-1 rounded-lg border border-green-600 hover:from-emerald-500 hover:to-green-400 hover:shadow-lg transition-all duration-300"
                           onClick={() => setEditing(p)}
                         >
                           Edit
                         </button>
+
+                        {/* Delete Button */}
                         <button
-                          className="bg-red-600 bg-opacity-80 text-white px-3 py-1 rounded hover:bg-opacity-100 transition"
+                          className="bg-gradient-to-r from-red-400 to-yellow-500 text-white px-3 py-1 rounded-lg border border-red-600 hover:from-red-500 hover:to-yellow-600 hover:shadow-lg transition-all duration-300"
                           onClick={() => deletePart(p.id)}
                         >
                           Delete
                         </button>
                       </div>
+
                     </li>
                   );
                 })}
