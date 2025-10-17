@@ -1,24 +1,26 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { isLoggedIn, logout } from "@/utils/auth"; 
+import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { isLoggedIn, logout } from "@/utils/auth";
+import { useUserStore } from "@/store/useUserStore";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState<any | null>(null);
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
 
-  // Check current user when app loads
+  // Check current user on app load
   useEffect(() => {
     (async () => {
       const r = await isLoggedIn();
       if (r?.user) setUser(r.user);
       else setUser(null);
     })();
-  }, []);
+  }, [setUser]);
 
-  // Handle logout click
+  // Logout handler
   const handleLogout = async () => {
     try {
       await logout();
@@ -34,20 +36,17 @@ export default function App({ Component, pageProps }: AppProps) {
       {/* ---------- Header ---------- */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="text-xl font-semibold text-blue-600">
             AutoParts
           </Link>
 
-          {/* Navigation */}
           <nav className="space-x-4 flex items-center text-sm">
             <Link href="/" className="hover:text-blue-500 transition">Home</Link>
-            {/* <Link href="/test" className="hover:text-blue-500 transition">Test</Link> */}
             <Link href="/dashboard" className="hover:text-blue-500 transition">Dashboard</Link>
 
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-700">Hi, {user.name}</span>
+                <span className="text-blue-600 font-bold">Hi, {user.name}</span>
                 <button
                   onClick={handleLogout}
                   className="text-red-600 hover:text-red-700 font-medium transition"
