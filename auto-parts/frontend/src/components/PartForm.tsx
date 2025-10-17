@@ -3,12 +3,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+// Validation schema: all required, price & stock > 0
 const PartSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  brand: z.string().optional(),
-  price: z.number().nonnegative("Price must be >= 0"),
-  stock: z.number().int().nonnegative("Stock must be >= 0"),
-  category: z.string().optional(),
+  brand: z.string().min(1, "Brand is required"),
+  price: z
+    .number({ invalid_type_error: "Price must be a number" })
+    .positive("Price must be greater than 0"),
+  stock: z
+    .number({ invalid_type_error: "Stock must be a number" })
+    .int("Stock must be an integer")
+    .positive("Stock must be greater than 0"),
+  category: z.string().min(1, "Category is required"),
 });
 
 type PartInput = z.infer<typeof PartSchema>;
@@ -30,73 +36,78 @@ export default function PartForm({
     defaultValues: defaultValues || {
       name: "",
       brand: "",
-      price: 0,
-      stock: 0,
+      price: 1,
+      stock: 1,
       category: "",
     },
   });
 
-  // Reset form whenever defaultValues change (for Edit)
+  // Reset form when defaultValues change (for Edit)
   useEffect(() => {
-    reset(defaultValues || {
-      name: "",
-      brand: "",
-      price: 0,
-      stock: 0,
-      category: "",
-    });
+    reset(defaultValues || { name: "", brand: "", price: 1, stock: 1, category: "" });
   }, [defaultValues, reset]);
 
   const handleFormSubmit = async (data: PartInput) => {
     await onSubmit(data);
-    reset(defaultValues ? defaultValues : { name: "", brand: "", price: 0, stock: 0, category: "" }); 
+    reset(defaultValues ? defaultValues : { name: "", brand: "", price: 1, stock: 1, category: "" });
   };
 
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className="space-y-3 bg-white p-4 rounded-xl shadow-md"
+      className="space-y-4 bg-white p-4 rounded-xl shadow-md"
     >
       {/* Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-        <input {...register("name")} className="w-full border border-gray-300 p-2 rounded" />
-        {errors.name && <div className="text-sm text-red-600">{errors.name.message}</div>}
+        <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+        <input
+          {...register("name")}
+          className={`w-full border p-2 rounded ${errors.name ? "border-red-500" : "border-gray-300"}`}
+        />
+        {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
       </div>
 
       {/* Brand */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-        <input {...register("brand")} className="w-full border border-gray-300 p-2 rounded" />
+        <label className="block text-sm font-medium text-gray-700 mb-1">Brand *</label>
+        <input
+          {...register("brand")}
+          className={`w-full border p-2 rounded ${errors.brand ? "border-red-500" : "border-gray-300"}`}
+        />
+        {errors.brand && <p className="text-red-600 text-sm mt-1">{errors.brand.message}</p>}
       </div>
 
       {/* Price */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
         <input
           type="number"
           step="0.01"
           {...register("price", { valueAsNumber: true })}
-          className="w-full border border-gray-300 p-2 rounded"
+          className={`w-full border p-2 rounded ${errors.price ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.price && <div className="text-sm text-red-600">{errors.price.message}</div>}
+        {errors.price && <p className="text-red-600 text-sm mt-1">{errors.price.message}</p>}
       </div>
 
       {/* Stock */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Stock *</label>
         <input
           type="number"
           {...register("stock", { valueAsNumber: true })}
-          className="w-full border border-gray-300 p-2 rounded"
+          className={`w-full border p-2 rounded ${errors.stock ? "border-red-500" : "border-gray-300"}`}
         />
-        {errors.stock && <div className="text-sm text-red-600">{errors.stock.message}</div>}
+        {errors.stock && <p className="text-red-600 text-sm mt-1">{errors.stock.message}</p>}
       </div>
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-        <input {...register("category")} className="w-full border border-gray-300 p-2 rounded" />
+        <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+        <input
+          {...register("category")}
+          className={`w-full border p-2 rounded ${errors.category ? "border-red-500" : "border-gray-300"}`}
+        />
+        {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category.message}</p>}
       </div>
 
       {/* Submit */}
