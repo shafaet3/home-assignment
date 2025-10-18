@@ -17,13 +17,13 @@ model Users {
     createdAt DateTime @default(now()) @map("created_at")
 }
 
-
 model Parts {
-    id Int @id @default(autoincrement())
-    name String
-    brand String ?
-    price Decimal @db.Decimal(10, 2)
-    stock Int
-    category String ?
-    createdAt DateTime @default(now()) @map("created_at")
+  id        Int      @id @default(autoincrement())
+  name      String
+  brand     String ?
+  price     Decimal @db.Decimal(10, 2)
+  stock     Int
+  category  String ?
+  image     String ?   
+  createdAt DateTime @default(now()) @map("created_at")
 }

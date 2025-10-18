@@ -31,18 +31,43 @@ export default function PartPage({ part }: { part: Part | null }) {
   const gradient = gradients[part.id % gradients.length];
 
   return (
-    <div
-      className={`bg-gradient-to-br ${gradient} p-6 rounded-xl shadow-lg text-white max-w-md mx-auto mt-10`}
-    >
-      <h1 className="text-3xl font-bold mb-2">{part.name}</h1>
-      <p className="text-sm opacity-90 mb-2">Brand: {part.brand || "-"}</p>
-      <p className="mb-2 opacity-90">Category: {part.category || "-"}</p>
-      <p className="text-2xl font-semibold mb-2">${part.price}</p>
-      <p className="text-sm opacity-90">Stock: {part.stock}</p>
-      <p className="text-xs opacity-70 mt-4">
-        Created: {part.createdAt ? new Date(part.createdAt).toLocaleString() : "-"}
-      </p>
+    <div className="max-w-3xl mx-auto mt-10 flex flex-col md:flex-row gap-6 rounded-2xl shadow-lg overflow-hidden">
+      {/* Image Section with Gradient */}
+      <div
+        className={`flex-shrink-0 w-full md:w-1/3 bg-gradient-to-br ${gradients[part.id % gradients.length]
+          } p-4 flex items-center justify-center`}
+      >
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_BASE?.replace("/api", "")}${part.imageUrl}`}
+          alt={part.name}
+          className="w-full h-64 object-cover rounded-xl shadow-md border border-white/30"
+        />
+      </div>
+
+      {/* Info Section */}
+      <div className="flex-1 bg-white p-6 flex flex-col justify-between rounded-r-2xl">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">{part.name}</h1>
+          <p className="text-gray-600 mb-1">
+            <span className="font-semibold">Brand:</span> {part.brand || "-"}
+          </p>
+          <p className="text-gray-600 mb-1">
+            <span className="font-semibold">Category:</span> {part.category || "-"}
+          </p>
+          <p className="text-gray-800 text-2xl font-semibold mb-1">
+            ${part.price}
+          </p>
+          <p className="text-gray-600 mb-1">
+            <span className="font-semibold">Stock:</span> {part.stock}
+          </p>
+        </div>
+
+        <div className="text-gray-500 text-sm mt-4">
+          Created: {part.createdAt ? new Date(part.createdAt).toLocaleString() : "-"}
+        </div>
+      </div>
     </div>
+
   );
 }
 

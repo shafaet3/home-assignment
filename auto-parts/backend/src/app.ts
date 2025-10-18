@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth";
 import partsRoutes from "./routes/parts";
+import path from "path";
 
 const app = express();
 
@@ -15,6 +16,10 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+// Serve uploads globally
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
 
 // Routes
 app.use("/api/auth", authRoutes);
