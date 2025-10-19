@@ -62,29 +62,34 @@ A **full-stack auto parts management application** built with **Next.js**, **Exp
 ---
 
 ## 🗂️ Folder Structure
-auto-parts/
-├─ backend/
-│  ├─ package.json
-│  ├─ Dockerfile.dev
-│  ├─ prisma/
-│  │  └─ schema.prisma
-│  ├─ src/
-│  │  ├─ server.ts
-│  │  ├─ app.ts
-│  │  ├─ routes/
-│  │  │  ├─ auth.ts
-│  │  │  └─ parts.ts
-│  │  ├─ middleware/
-│  │  └─ utils/
-│  └─ .env
-└─ frontend/
-   ├─ package.json
-   ├─ Dockerfile.dev
-   ├─ src/
-   │  ├─ pages/
-   │  ├─ components/
-   │  └─ lib/
-   └─ .env.local
+autoparts/
+├── backend/
+│ ├── src/
+│ │ ├── routes/
+│ │ │ ├── auth.ts
+│ │ │ └── parts.ts
+│ │ ├── middleware/
+│ │ ├── utils/
+│ │ ├── app.ts
+│ │ └── server.ts
+│ ├── prisma/
+│ │ └── schema.prisma
+│ ├── Dockerfile.dev
+│ ├── package.json
+│ └── .env
+│
+├── frontend/
+│ ├── src/
+│ │ ├── pages/
+│ │ ├── components/
+│ │ └── lib/
+│ ├── Dockerfile.dev
+│ ├── package.json
+│ └── .env.local
+│
+├── docker-compose.yml
+├── README.md
+└── CONTRIBUTING.md
 
 
 ## 🐳 Running Locally (with Docker)
