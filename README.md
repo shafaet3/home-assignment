@@ -115,6 +115,7 @@ Create .env files in:
 Example configuration:
 
 backend/.env:
+```bash
 PORT=4000
 DATABASE_URL=mysql://root:root@db:3306/autoparts_db
 JWT_SECRET=ReplaceWithStrongSecret
@@ -123,25 +124,29 @@ FRONTEND_URL=http://localhost:3000
 COOKIE_NAME=autoparts_token
 API_BASE_URL=http://localhost:4000
 
+```
 frontend/.env.local:
+```bash
 NEXT_PUBLIC_API_BASE=http://localhost:4000/api
 INTERNAL_API_BASE=http://backend:4000/api
-
+```
 ### 3️⃣ Start the Project
-
+```bash
 docker-compose -f docker-compose.dev.yml up --build
-
+```
 Once running:
 - Frontend → http://localhost:3000
 - Backend API → http://localhost:4000/api
 - Database → MySQL accessible at port 3307
 
 ### 4️⃣ Stop Containers
+```bash
 docker-compose -f docker-compose.dev.yml down -v
-
+```
 ⚙️ Prisma Commands (if needed)
-
 Inside the backend container:
+```bash
 docker exec -it autoparts_backend bash
 npx prisma generate
 npx prisma migrate deploy
+```
