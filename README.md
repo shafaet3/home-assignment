@@ -60,7 +60,7 @@ A **full-stack auto parts management application** built with **Next.js**, **Exp
 | **tailwindcss** | Utility-first CSS framework |
 
 ---
-
+---
 ## 🗂️ Folder Structure
 autoparts/
 ├── backend/
