@@ -1,69 +1,141 @@
-# Take home assignment
+# 🧰 AutoParts Management System
 
-## Auto Parts Inventory & Ordering System
+A **full-stack auto parts management application** built with **Next.js**, **Express.js**, **Prisma**, and **MySQL**, fully Dockerized for seamless local development and deployment.
 
-### Goal
+---
 
-Build a mini full-stack application for managing and browsing auto parts.
-It should have:
-- A public product listing (SSR + SSG + CSR mix)
-- A simple backend API with authentication and CRUD
-- MySQL as the database
-- Next.js (frontend) and Express.js (backend) communication via REST API
+## 🚀 Features
 
-#### Frontend (Next.js)
+### 🔐 Authentication
+- User registration & login using **JWT** authentication  
+- Secure password hashing with **bcrypt**
 
-Use Next.js (React + TypeScript optional) and demonstrate:
-- SSR (Server-Side Rendering) – e.g., the homepage or product list should be rendered on the server.
-- SSG (Static Site Generation) – e.g., individual product detail pages should be pre-generated at build time.
-- CSR (Client-Side Rendering) – e.g., user dashboard or order creation handled dynamically on the client side.
+### 🧩 Product Management
+- Create, update, and manage auto parts
+- Upload product images with **Multer**
 
-##### Pages to Include:
+### 🧠 Validation & State Management
+- Form validation using **Zod** & **React Hook Form**
+- Global state with **Zustand**
 
-- / → SSR page showing list of all parts (from backend API)
-- /parts/[id] → SSG page showing product details
-- /dashboard → CSR page (only for logged-in users) showing ability to:
-  - Add, edit, or delete parts
-  - View basic analytics (e.g., total parts, categories count)
- 
-##### Features:
+### ⚙️ Database & ORM
+- **MySQL** as database
+- **Prisma ORM** for schema management & migrations
 
-- Responsive design
-- Basic search/filter (client-side)
-- Form validation (React Hook Form, Zod, or similar)
-- API integration via fetch or Axios
-- Authentication via JWT (login, logout, protected routes)
+### 🎨 Frontend (Next.js)
+- Built with **Next.js 13**
+- Tailwind CSS for fast and responsive UI design
+- Icons from **Lucide-react**
 
-#### Backend (Express.js)
+---
 
-Use Express.js with MySQL (via Sequelize, Prisma, or Knex).
-Endpoints to Include:
+## 🧱 Tech Stack
 
-| Method   | Endpoint             | Description                        |
-| -------- | -------------------- | ---------------------------------- |
-| `POST`   | `/api/auth/register` | Register new user                  |
-| `POST`   | `/api/auth/login`    | Login and return JWT               |
-| `GET`    | `/api/parts`         | Get list of all parts              |
-| `GET`    | `/api/parts/:id`     | Get single part details            |
-| `POST`   | `/api/parts`         | Add a new part (auth required)     |
-| `PUT`    | `/api/parts/:id`     | Edit existing part (auth required) |
-| `DELETE` | `/api/parts/:id`     | Delete a part (auth required)      |
+| Layer | Technology |
+|-------|-------------|
+| **Frontend** | Next.js, React, Tailwind CSS, Zustand |
+| **Backend** | Node.js, Express.js, Prisma |
+| **Database** | MySQL (Dockerized) |
+| **Authentication** | JWT + Bcrypt |
+| **Validation** | Zod |
+| **Containerization** | Docker & Docker Compose |
+
+---
+
+## 📦 NPM Packages Overview
+
+| Package | Use Case |
+|----------|-----------|
+| **express** | Web framework for backend APIs |
+| **prisma** / **@prisma/client** | ORM for database access |
+| **bcrypt** | Hash user passwords securely |
+| **jsonwebtoken** | Create and verify JWT tokens |
+| **multer** | Handle image/file uploads |
+| **zod** | Schema validation |
+| **cors** | Handle cross-origin requests |
+| **dotenv** | Load environment variables |
+| **react-hook-form** | Manage form states easily |
+| **zustand** | Lightweight global state management |
+| **lucide-react** | Modern icons |
+| **tailwindcss** | Utility-first CSS framework |
+
+---
+
+## 🗂️ Folder Structure
+auto-parts/
+├─ backend/
+│  ├─ package.json
+│  ├─ Dockerfile.dev
+│  ├─ prisma/
+│  │  └─ schema.prisma
+│  ├─ src/
+│  │  ├─ server.ts
+│  │  ├─ app.ts
+│  │  ├─ routes/
+│  │  │  ├─ auth.ts
+│  │  │  └─ parts.ts
+│  │  ├─ middleware/
+│  │  └─ utils/
+│  └─ .env
+└─ frontend/
+   ├─ package.json
+   ├─ Dockerfile.dev
+   ├─ src/
+   │  ├─ pages/
+   │  ├─ components/
+   │  └─ lib/
+   └─ .env.local
 
 
-##### Tables:
+## 🐳 Running Locally (with Docker)
 
-users
+Follow these steps to run the full stack locally using Docker Compose.
 
-| id | name | email | password_hash | created_at |
+### 1️⃣ Clone the Repository
 
-parts
+```bash
+git clone https://github.com/<your-username>/autoparts.git
+cd autoparts
+```
 
-| id | name | brand | price | stock | category | created_at |
+### 2️⃣ Environment Setup
 
-Requirements:
+Create .env files in:
 
-- JWT authentication middleware
-- Proper validation (e.g., Joi, Yup, Zod)
-- Error handling (e.g., 400/401/500 responses)
-- Use .env for sensitive data (DB credentials, JWT secret)
-- Database migrations or schema setup script
+/backend/.env
+
+/frontend/.env.local
+
+Example configuration:
+
+backend/.env:
+PORT=4000
+DATABASE_URL=mysql://root:root@db:3306/autoparts_db
+JWT_SECRET=ReplaceWithStrongSecret
+JWT_EXPIRES_IN=7d
+FRONTEND_URL=http://localhost:3000
+COOKIE_NAME=autoparts_token
+API_BASE_URL=http://localhost:4000
+
+frontend/.env.local:
+NEXT_PUBLIC_API_BASE=http://localhost:4000/api
+INTERNAL_API_BASE=http://backend:4000/api
+
+### 3️⃣ Start the Project
+
+docker-compose -f docker-compose.dev.yml up --build
+
+Once running:
+- Frontend → http://localhost:3000
+- Backend API → http://localhost:4000/api
+- Database → MySQL accessible at port 3307
+
+### 4️⃣ Stop Containers
+docker-compose -f docker-compose.dev.yml down -v
+
+⚙️ Prisma Commands (if needed)
+
+Inside the backend container:
+docker exec -it autoparts_backend bash
+npx prisma generate
+npx prisma migrate deploy
