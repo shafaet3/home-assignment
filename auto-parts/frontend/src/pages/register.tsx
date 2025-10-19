@@ -8,14 +8,21 @@ export default function Register() {
   const router = useRouter();
 
   async function onSubmit(data: any) {
-    try {
-      await apiRegister(data.name, data.email, data.password);
-      alert("Registered. Please login.");
-      router.push("/login");
-    } catch (err: any) {
-      alert(err.data?.message || "Register failed");
-    }
+  try {
+    await apiRegister(data.name, data.email, data.password);
+    alert("Registered. Please login.");
+    router.push("/login");
+  } catch (err: any) {
+    // Axios error handling
+    const message =
+      err.response?.data?.message || // server error message
+      err.message ||                 // network or other errors
+      "Register failed";
+
+    alert(message);
   }
+}
+
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded shadow">

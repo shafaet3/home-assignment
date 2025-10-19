@@ -24,6 +24,6 @@ model Parts {
   price     Decimal @db.Decimal(10, 2)
   stock     Int
   category  String ?
-  image     String ?   
+  imageUrl  String ?   
   createdAt DateTime @default(now()) @map("created_at")
 }

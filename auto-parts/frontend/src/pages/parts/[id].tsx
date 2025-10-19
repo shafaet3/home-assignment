@@ -3,11 +3,12 @@ import { GetStaticPaths, GetStaticProps } from "next";
 type Part = {
   id: number;
   name: string;
-  brand?: string;
-  price: string | number;
+  brand: string | null;
+  price: number;
   stock: number;
-  category?: string;
-  createdAt?: string;
+  category: string | null;
+  imageUrl?: string | null;
+  createdAt: Date;
 };
 
 // 🌈 Gradient colors
@@ -72,18 +73,51 @@ export default function PartPage({ part }: { part: Part | null }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/parts`);
+  if (process.env.DOCKER_BUILD === "true") {
+    return {
+      paths: [{ params: { id: "1" } }],
+      fallback: "blocking",
+    };
+  }
+
+  const res = await fetch(`${process.env.INTERNAL_API_BASE}/parts`);
   const parts = await res.json();
-  const paths = (parts || []).slice(0, 50).map((p: any) => ({
+
+  const paths = parts.slice(0, 50).map((p: any) => ({
     params: { id: String(p.id) },
   }));
+
   return { paths, fallback: "blocking" };
 };
 
+
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const id = ctx.params?.id;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/parts/${id}`);
+
+  // During docker build, skip fetching real backend
+  if (process.env.DOCKER_BUILD === "true") {
+    return {
+      props: {
+        part: {
+          id: Number(id) || 1,
+          name: "Sample Part",
+          brand: "Sample Brand",
+          price: 100,
+          stock: 10,
+          category: "Sample Category",
+          imageUrl: "/uploads/placeholder.png",
+          createdAt: new Date().toISOString(),
+        },
+      },
+    };
+  }
+
+  const res = await fetch(`${process.env.INTERNAL_API_BASE}/parts/${id}`);
   if (!res.ok) return { notFound: true };
   const part = await res.json();
-  return { props: { part }, revalidate: 3600 };
+
+  return {
+    props: { part },
+    revalidate: 3600,
+  };
 };

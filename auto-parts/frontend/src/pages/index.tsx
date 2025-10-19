@@ -5,11 +5,14 @@ import { useState } from "react";
 type Part = {
   id: number;
   name: string;
-  brand?: string;
-  price: string | number;
+  brand: string | null;
+  price: number;
   stock: number;
-  category?: string;
+  category: string | null;
+  imageUrl?: string | null;
+  createdAt: Date;
 };
+
 
 // 🌈 Extended colorful gradients
 const colors = [
@@ -93,7 +96,8 @@ export default function Home({ parts }: { parts: Part[] }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/parts`);
+  const res = await fetch(`${process.env.INTERNAL_API_BASE}/parts`);
+  if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
   const parts = await res.json();
   return { props: { parts } };
 };

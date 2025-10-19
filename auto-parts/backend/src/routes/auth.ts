@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import { prisma } from '../db';
 import { registerSchema, loginSchema } from '../utils/validators';
 import env from '../env';
@@ -33,11 +33,15 @@ router.post('/login', async (req, res) => {
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
         const ok = await bcrypt.compare(body.password, user.passwordHash);
         if (!ok) return res.status(400).json({ message: 'Invalid credentials' });
-        const token = jwt.sign(
-            { userId: user.id },
-            env.JWT_SECRET,
-            { expiresIn: env.JWT_EXPIRES_IN }
-        );
+
+        const payload = { userId: user.id };
+        const secret = env.JWT_SECRET as Secret;
+        const expiresIn = (process.env.JWT_EXPIRES_IN || "7d") as SignOptions["expiresIn"];
+        const options: SignOptions = { expiresIn };
+        const token = jwt.sign(payload, secret, options);
+       
+
+
         // set httpOnly cookie
         res.cookie(env.COOKIE_NAME, token, {
             httpOnly: true,

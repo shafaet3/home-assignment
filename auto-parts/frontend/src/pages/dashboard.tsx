@@ -10,12 +10,14 @@ import AnalyticsBar from "@/components/AnalyticsBar";
 type Part = {
   id: number;
   name: string;
-  brand?: string;
+  brand: string | null;
   price: number;
   stock: number;
-  category?: string;
-  imageUrl?: string; // assuming imageUrl is the key returned by the API for image path
+  category: string | null;
+  imageUrl?: string | null;
+  createdAt: Date;
 };
+
 
 // Gradient colors for card backgrounds
 const gradients = [
@@ -207,13 +209,22 @@ export default function Dashboard() {
             </h3>
 
             <PartForm
-              defaultValues={editing || undefined}
+              defaultValues={
+                editing
+                  ? {
+                    ...editing,
+                    brand: editing.brand ?? undefined,
+                    category: editing.category ?? undefined,
+                    imageUrl: editing.imageUrl ?? undefined,
+                  }
+                  : undefined
+              }
               onSubmit={editing ? updatePart : createPart}
               onCancel={() => setEditing(null)}
             />
 
 
-            
+
           </div>
         </aside>
       </div>

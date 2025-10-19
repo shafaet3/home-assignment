@@ -18,6 +18,7 @@ CREATE TABLE `Parts` (
     `price` DECIMAL(10, 2) NOT NULL,
     `stock` INTEGER NOT NULL,
     `category` VARCHAR(191) NULL,
+    `imageUrl` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
