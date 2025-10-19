@@ -90,7 +90,7 @@ autoparts/
 ├── docker-compose.yml
 ├── README.md
 └── CONTRIBUTING.md
-
+---
 
 ## 🐳 Running Locally (with Docker)
 
