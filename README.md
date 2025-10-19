@@ -60,7 +60,7 @@ A **full-stack auto parts management application** built with **Next.js**, **Exp
 | **tailwindcss** | Utility-first CSS framework |
 
 ---
----
+```bash
 ## 🗂️ Folder Structure
 autoparts/
 ├── backend/
@@ -90,6 +90,7 @@ autoparts/
 ├── docker-compose.yml
 ├── README.md
 └── CONTRIBUTING.md
+```
 ---
 
 ## 🐳 Running Locally (with Docker)
