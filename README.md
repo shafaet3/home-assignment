@@ -100,7 +100,7 @@ Follow these steps to run the full stack locally using Docker Compose.
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone [https://github.com/shafaet3/home-assignment.git]
+git clone https://github.com/shafaet3/home-assignment.git
 cd autoparts
 ```
 
