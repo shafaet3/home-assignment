@@ -101,20 +101,20 @@ Follow these steps to run the full stack locally using Docker Compose.
 
 ```bash
 git clone https://github.com/shafaet3/home-assignment.git
-cd autoparts
+cd home-assignment/auto-parts
 ```
 
 ### 2️⃣ Environment Setup
 
-Create .env files in:
+Create two .env files in:
 
-/backend/.env
+1. /backend/.env
 
-/frontend/.env.local
+2. /frontend/.env.local
 
 Example configuration:
 
-backend/.env:
+1. backend/.env:
 ```bash
 PORT=4000
 DATABASE_URL=mysql://root:root@db:3306/autoparts_db
@@ -125,7 +125,7 @@ COOKIE_NAME=autoparts_token
 API_BASE_URL=http://localhost:4000
 
 ```
-frontend/.env.local:
+2. frontend/.env.local:
 ```bash
 NEXT_PUBLIC_API_BASE=http://localhost:4000/api
 INTERNAL_API_BASE=http://backend:4000/api
